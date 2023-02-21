@@ -1,5 +1,6 @@
 package edu.oru.cit352.moseszhao.mycontactlist;
 
+//Imports
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -8,14 +9,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
-
 import androidx.fragment.app.DialogFragment;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
+
+/*
+Name: Mengen Zhao
+Professor: Dr. Osborne
+Date: 2/20/2023
+Description: A contact list App that stores user's information.
+The DatePickerDialog class that shows a dialog for the user to pick time.
+*/
 
 public class DatePickerDialog extends DialogFragment {
 
@@ -28,6 +35,7 @@ public class DatePickerDialog extends DialogFragment {
         void didFinishDatePickerDialog(Calendar selectedTime);
     }
 
+    //Empty constructor
     public DatePickerDialog() {
     }
 
@@ -43,6 +51,7 @@ public class DatePickerDialog extends DialogFragment {
         selectedDate = Calendar.getInstance();
 
         // Set up the CalendarView and set the selectedDate to the chosen date
+        //Find view with ID
         final CalendarView cv = view.findViewById(R.id.calendarView);
         cv.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -52,9 +61,10 @@ public class DatePickerDialog extends DialogFragment {
         });
 
         //Set up the save button to save the selected date
+        //Find view with ID
         Button saveButton = view.findViewById(R.id.buttonSelect);
         saveButton.setOnClickListener(new View.OnClickListener() {
-            //Method to call saveItem when clicked
+            //Method to call saveItem to save the date when clicked
             @Override
             public void onClick(View view) {
                 saveItem(selectedDate);
@@ -62,6 +72,7 @@ public class DatePickerDialog extends DialogFragment {
         });
 
         //Set up the cancel button to dismiss the dialog
+        //Find view with ID
         Button cancelButton = view.findViewById(R.id.buttonCancel);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             //Method to dismiss the dialog when clicked
@@ -73,9 +84,10 @@ public class DatePickerDialog extends DialogFragment {
         return view;
     }
 
-    //Method to save the selected date
+    //Method to save the selected date and set the Birthday text to the date
     private void saveItem(Calendar selectedTime) {
         SaveDateListener activity = (SaveDateListener) getActivity();
+        //call function to set birthday date to selected time
         activity.didFinishDatePickerDialog(selectedTime);
         getDialog().dismiss();
     }

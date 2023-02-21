@@ -1,8 +1,8 @@
 package edu.oru.cit352.moseszhao.mycontactlist;
 
+//Imports
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -11,11 +11,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
-
 import android.widget.TextView;
 import android.widget.ToggleButton;
-
 import java.util.Calendar;
+
+/*
+Name: Mengen Zhao
+Professor: Dr. Osborne
+Date: 2/20/2023
+Description: A contact list App that stores user's information. The main activity of the app which initializes everything.
+*/
 
 public class MainActivity extends AppCompatActivity implements DatePickerDialog.SaveDateListener{
 
@@ -30,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         initSettingsButton();
         initToggleButton();
         initChangeDateButton();
+        //Initialize text edits to be disabled
         setForEditing(false);
     }
 
@@ -121,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         if (enabled) {
             editName.requestFocus();
         }
+        //Otherwise do not focus
         else {
             ScrollView s = (ScrollView) findViewById(R.id.scrollViewContact);
             s.fullScroll(ScrollView.FOCUS_UP);
@@ -128,9 +135,12 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         }
     }
 
+    //Method to set the Birthday text
     @Override
     public void didFinishDatePickerDialog(Calendar selectedTime) {
+        //find view with ID
         TextView birthDay = findViewById(R.id.textBirthday);
+        //set birth date text to the formatted selected time
         birthDay.setText(DateFormat.format("MM/dd/yyyy", selectedTime));
     }
 
@@ -139,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         //Find the view by ID
         Button changeDate = findViewById(R.id.buttonBirthday);
         changeDate.setOnClickListener(new View.OnClickListener() {
-            //Method to change the date when clicked
+            //Method to change the date when clicked with datePickerDialog class
             @Override
             public void onClick(View view) {
                 FragmentManager fm = getSupportFragmentManager();

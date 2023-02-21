@@ -1,5 +1,6 @@
 package edu.oru.cit352.moseszhao.mycontactlist;
 
+//Imports
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -7,12 +8,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
+/*
+Name: Mengen Zhao
+Professor: Dr. Osborne
+Date: 2/20/2023
+Description: A contact list App that stores user's information. ContactMapActivity that has a map.
+*/
 public class ContactMapActivity extends AppCompatActivity {
 
     @Override
+    //Method that initializes the activity when was navigated
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_map);
+        //methods to initialize the Buttons
         initListButton();
         initMapButton();
         initSettingsButton();
@@ -33,11 +42,13 @@ public class ContactMapActivity extends AppCompatActivity {
         });
     }
 
-    //Method to initialize Map Button to diable it
+    //Method to initialize Map Button to disable it
     private void initMapButton(){
         //Get the view with ID and disable it
-        ImageButton ibmap = findViewById(R.id.imageButtonMap);
-        ibmap.setEnabled(false);
+        ImageButton ibMap = findViewById(R.id.imageButtonMap);
+        ibMap.setEnabled(false);
+        //Animation to darken the imageButton
+        ibMap.animate().alpha(0.6f).setDuration(500);
     }
 
     //Method to initialize Settings Button
