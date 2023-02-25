@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +26,8 @@ Description: A contact list App that stores user's information. The main activit
 */
 
 public class MainActivity extends AppCompatActivity implements DatePickerDialog.SaveDateListener{
+    //Reference variable
+    private Contact currentContact;
 
     @Override
     //Method that initializes the app when starts
@@ -37,6 +42,153 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         initChangeDateButton();
         //Initialize text edits to be disabled
         setForEditing(false);
+        //Create instance of Contact object
+        currentContact = new Contact();
+        initTextChangeEvents();
+    }
+
+    //Method to change the text in contact to User's change
+    private void initTextChangeEvents() {
+        //Find view with ID
+        final EditText etContactName = findViewById(R.id.editName);
+        //When text is changed by User change the relevant field in the Contact object
+        etContactName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //Not needed in this situation
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //Not needed in this situation
+            }
+
+            //After text is changed by user update contact object
+            @Override
+            public void afterTextChanged(Editable editable) {
+                currentContact.setContactName(etContactName.getText().toString());
+            }
+        });
+
+        //Find view with ID
+        final EditText etStreetAddress = findViewById(R.id.editAddress);
+        //When text is changed by User change the relevant field in the Contact object
+        etStreetAddress.addTextChangedListener(new TextWatcher() {
+            //After text is changed by user update contact object
+            public void afterTextChanged(Editable s) {
+                currentContact.setStreetAddress(etStreetAddress.getText().toString());
+            }
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+                //Not needed in this situation
+            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //Not needed in this situation
+            }
+        });
+
+        //Find view with ID
+        final EditText etCity = findViewById(R.id.editCity);
+        //When text is changed by User change the relevant field in the Contact object
+        etCity.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+                //Not needed in this situation
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //Not needed in this situation
+            }
+
+            // After text is changed by user update contact object
+            public void afterTextChanged(Editable editable) {
+                currentContact.setCity(etCity.getText().toString());
+            }
+        });
+
+        //Find view with ID
+        final EditText etState = findViewById(R.id.editState);
+        //When text is changed by User change the relevant field in the Contact object
+        etState.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+                //Not needed in this situation
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //Not needed in this situation
+            }
+            //Not needed in this situation
+            public void afterTextChanged(Editable editable) {
+                currentContact.setState(etState.getText().toString());
+            }
+        });
+
+        //Find view with ID
+        final EditText etZip = findViewById(R.id.editZipcode);
+        //When text is changed by User change the relevant field in the Contact object
+        etZip.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //Not needed in this situation
+            }
+
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //Not needed in this situation
+            }
+            //Not needed in this situation
+            public void afterTextChanged(Editable editable) {
+                currentContact.setZipCode(etZip.getText().toString());
+            }
+        });
+
+        //Find view with ID
+        final EditText etPhone = findViewById(R.id.editHome);
+        //When text is changed by User change the relevant field in the Contact object
+        etPhone.addTextChangedListener(new TextWatcher() {
+            //Not needed in this situation
+            public void afterTextChanged(Editable s) {
+                currentContact.setPhoneNumber(etPhone.getText().toString());
+            }
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+                //Not needed in this situation
+            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //Not needed in this situation
+            }
+        });
+
+        //Find view with ID
+        final EditText etCell = findViewById(R.id.editCell);
+        //When text is changed by User change the relevant field in the Contact object
+        etCell.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //Not needed in this situation
+            }
+
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //Not needed in this situation
+            }
+            //Not needed in this situation
+            public void afterTextChanged(Editable editable) {
+                currentContact.setCellNumber(etCell.getText().toString());
+            }
+        });
+
+        //Find view with ID
+        final EditText etEMail = findViewById(R.id.editEmail);
+        //When text is changed by User change the relevant field in the Contact object
+        etEMail.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //Not needed in this situation
+            }
+
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //Not needed in this situation
+            }
+            //Not needed in this situation
+            public void afterTextChanged(Editable editable) {
+                currentContact.seteMail(etEMail.getText().toString());
+            }
+        });
+
+        //Call for formatting phone numbers
+        etPhone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+        etCell.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
     }
 
     //Method to initialize List Button
@@ -142,6 +294,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         TextView birthDay = findViewById(R.id.textBirthday);
         //set birth date text to the formatted selected time
         birthDay.setText(DateFormat.format("MM/dd/yyyy", selectedTime));
+        //Set birthday to selectedTime in the Contact class instance
+        currentContact.setBirthday(selectedTime);
     }
 
     //Method to initialize Change Date Button
