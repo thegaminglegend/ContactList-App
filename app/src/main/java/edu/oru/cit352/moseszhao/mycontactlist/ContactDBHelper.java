@@ -6,6 +6,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+/*
+Name: Mengen Zhao
+Professor: Dr. Osborne
+Program: Contact List app
+Date: 2/20/2023
+Description: A contact list App that stores user's information.
+Class to help to manage Database to create table and update DB when version change
+*/
+
 public class ContactDBHelper extends SQLiteOpenHelper {
 
     //Declare Variables

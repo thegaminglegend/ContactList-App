@@ -3,6 +3,8 @@ package edu.oru.cit352.moseszhao.mycontactlist;
 //Imports
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
@@ -10,6 +12,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -21,6 +24,7 @@ import java.util.Calendar;
 /*
 Name: Mengen Zhao
 Professor: Dr. Osborne
+Program: Contact List app
 Date: 2/20/2023
 Description: A contact list App that stores user's information. The main activity of the app which initializes everything.
 */
@@ -40,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         initSettingsButton();
         initToggleButton();
         initChangeDateButton();
+        initSaveButton();
         //Initialize text edits to be disabled
         setForEditing(false);
         //Create instance of Contact object
@@ -312,5 +317,77 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             }
         });
     }
+
+    //Method to initialize save button
+    private void initSaveButton() {
+        //Find the view by ID
+        Button saveButton = findViewById(R.id.buttonSave);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            //Method to save the contact information into DB when save clicked
+            @Override
+            public void onClick(View view) {
+                //Declare variable
+                boolean wasSuccessful;
+                //Call hideKeyboard method
+                hideKeyboard();
+                //instantiate class to manage database
+                ContactDataSource ds = new ContactDataSource(MainActivity.this);
+                try {
+                    //Open DB
+                    ds.open();
+                    //Check if the contact is new if true insert into DB
+                    if (currentContact.getContactID() == -1) {
+                        wasSuccessful = ds.insertContact(currentContact);
+                        //If inserted update the contactID
+                        if(wasSuccessful){
+                            int newID = ds.getLastContactID();
+                            currentContact.setContactID(newID);
+                        }
+                    }
+                    //If false update in DB
+                    else {
+                        wasSuccessful = ds.updateContact(currentContact);
+                    }
+                    //close DB
+                    ds.close();
+                }
+                catch (Exception e) {
+                    wasSuccessful = false;
+                }
+
+                //If inserted or updated
+                if (wasSuccessful) {
+                    //Find view by ID
+                    ToggleButton editToggle = findViewById(R.id.toggleButtonEdit);
+                    //Disable all edit text
+                    editToggle.toggle();
+                    setForEditing(false);
+                }
+            }
+        });
+    }
+
+    //Method to hide keyboard
+    private void hideKeyboard() {
+        //Get all the view with ID and hide the keyboard on those views when it is called
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        EditText editName = findViewById(R.id.editName);
+        imm.hideSoftInputFromWindow(editName.getWindowToken(), 0);
+        EditText editAddress = findViewById(R.id.editAddress);
+        imm.hideSoftInputFromWindow(editAddress.getWindowToken(), 0);
+        EditText et = findViewById(R.id.editCity);
+        imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+        et = findViewById(R.id.editState);
+        imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+        et = findViewById(R.id.editZipcode);
+        imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+        et = findViewById(R.id.editHome);
+        imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+        et = findViewById(R.id.editCell);
+        imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+        et = findViewById(R.id.editEmail);
+        imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+    }
+
 
 }

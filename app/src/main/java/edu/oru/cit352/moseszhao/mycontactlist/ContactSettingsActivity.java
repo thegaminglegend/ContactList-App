@@ -14,6 +14,7 @@ import android.widget.RadioGroup;
 /*
 Name: Mengen Zhao
 Professor: Dr. Osborne
+Program: Contact List app
 Date: 2/20/2023
 Description: A contact list App that stores user's information. ContactSettingsActivity that has the setting.
 */

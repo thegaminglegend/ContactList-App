@@ -1,10 +1,19 @@
 package edu.oru.cit352.moseszhao.mycontactlist;
 
+//Imports
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import java.sql.SQLException;
+
+/*
+Name: Mengen Zhao
+Professor: Dr. Osborne
+Program: Contact List app
+Date: 2/20/2023
+Description: A contact list App that stores user's information. Class to manage database
+*/
 
 public class ContactDataSource {
     //Create instance variables
