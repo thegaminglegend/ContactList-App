@@ -6,12 +6,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 /*
 Name: Mengen Zhao
 Professor: Dr. Osborne
 Program: Contact List app
-Date: 2/20/2023
+Date: 2/28/2023
 Description: A contact list App that stores user's information. Class to manage database
 */
 
@@ -115,5 +117,73 @@ public class ContactDataSource {
         }
         return lastId;
     }
+
+    //Method to get all the contact name from DB
+    public ArrayList<String> getContactName(){
+        //Reference Variable
+        ArrayList<String> contactNames = new ArrayList<>();
+        try{
+            //query to get the contactnname
+            String query = "Select contactname from contact";
+            Cursor cursor = database.rawQuery(query, null);
+            cursor.moveToFirst();
+
+            //Loop through the DB until the last entry and all on them into contactNames
+            while(!cursor.isAfterLast()){
+                contactNames.add(cursor.getString(0));
+                cursor.moveToNext();
+            }
+            //close cursor
+            cursor.close();
+        }
+        //If did not get anything set contactNames as a null ArrayList
+        catch (Exception e){
+            contactNames = new ArrayList<String>();
+        }
+        return contactNames;
+    }
+
+    //Method to retrieve data from DB
+    public ArrayList<Contact> getContacts() {
+        //Instance Variable contains arraylist of contact object
+        ArrayList<Contact> contacts = new ArrayList<Contact>();
+
+        try {
+            //Get all data from contact
+            String query = "SELECT * FROM contact";
+            //Initialize cursor
+            Cursor cursor = database.rawQuery(query, null);
+            //Instance Variable
+            Contact newContact;
+            cursor.moveToFirst();
+            //Loop through DB until get every data from every entry
+            while (!cursor.isAfterLast()) {
+                //Get the data from each relevant column of the entry cursor pointing to
+                newContact = new Contact();
+                newContact.setContactID(cursor.getInt(0));
+                newContact.setContactName(cursor.getString(1));
+                newContact.setStreetAddress(cursor.getString(2));
+                newContact.setCity(cursor.getString(3));
+                newContact.setState(cursor.getString(4));
+                newContact.setZipCode(cursor.getString(5));
+                newContact.setPhoneNumber(cursor.getString(6));
+                newContact.setCellNumber(cursor.getString(7));
+                newContact.seteMail(cursor.getString(8));
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(Long.valueOf(cursor.getString(9)));
+                newContact.setBirthday(calendar);
+                contacts.add(newContact);
+                //Increment Cursor to go through all entry
+                cursor.moveToNext();
+            }
+            //Close cursor
+            cursor.close();
+            //If get nothing give contact a Null arraylist
+        } catch (Exception e) {
+            contacts = new ArrayList<Contact>();
+        }
+        return contacts;
+    }
+
 
 }

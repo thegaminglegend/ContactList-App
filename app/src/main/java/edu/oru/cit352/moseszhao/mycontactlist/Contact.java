@@ -4,8 +4,8 @@ package edu.oru.cit352.moseszhao.mycontactlist;
 Name: Mengen Zhao
 Professor: Dr. Osborne
 Program: Contact List app
-Date: 2/20/2023
-Description: A contact list App that stores user's information. The class that has properties for a contact
+Date: 2/28/2023
+Description: A contact list App that stores user's information. The class that stores properties for a contact
 */
 
 //Import

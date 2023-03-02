@@ -25,7 +25,7 @@ import java.util.Calendar;
 Name: Mengen Zhao
 Professor: Dr. Osborne
 Program: Contact List app
-Date: 2/20/2023
+Date: 2/28/2023
 Description: A contact list App that stores user's information. The main activity of the app which initializes everything.
 */
 
@@ -351,6 +351,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                     //close DB
                     ds.close();
                 }
+                //If unable to insert or update set wasSuccessful to false
                 catch (Exception e) {
                     wasSuccessful = false;
                 }
@@ -388,6 +389,4 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         et = findViewById(R.id.editEmail);
         imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
     }
-
-
 }

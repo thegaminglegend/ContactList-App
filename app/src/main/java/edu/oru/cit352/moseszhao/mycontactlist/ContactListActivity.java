@@ -2,17 +2,22 @@ package edu.oru.cit352.moseszhao.mycontactlist;
 
 //Imports
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /*
 Name: Mengen Zhao
 Professor: Dr. Osborne
 Program: Contact List app
-Date: 2/20/2023
+Date: 2/28/2023
 Description: A contact list App that stores user's information. ContactListActivity that has the contact list of user.
 */
 
@@ -28,6 +33,29 @@ public class ContactListActivity extends AppCompatActivity {
         initListButton();
         initMapButton();
         initSettingsButton();
+
+        //To get the data from database and display it
+        //Instance variable
+        ContactDataSource ds = new ContactDataSource(this);
+        ArrayList<String> names;
+        try {
+            //Open DB get contactName and close DB
+            ds.open();
+            names = ds.getContactName();
+            ds.close();
+            //Find view with ID
+            RecyclerView contactList = findViewById(R.id.rvContacts);
+            //Instantiate layoutManager and set the layout manager
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+            contactList.setLayoutManager(layoutManager);
+            //Instantiate contactAdapter and set the contactAdapter
+            ContactAdapter contactAdapter = new ContactAdapter(names);
+            contactList.setAdapter(contactAdapter);
+
+        //If something wrong show error text
+        } catch (Exception e) {
+            Toast.makeText(this, "Error retrieving contacts", Toast.LENGTH_LONG).show();
+        }
     }
 
     //Method to initialize List Button to disable it

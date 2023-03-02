@@ -12,7 +12,7 @@ import android.widget.ImageButton;
 Name: Mengen Zhao
 Professor: Dr. Osborne
 Program: Contact List app
-Date: 2/20/2023
+Date: 2/28/2023
 Description: A contact list App that stores user's information. ContactMapActivity that has a map.
 */
 public class ContactMapActivity extends AppCompatActivity {

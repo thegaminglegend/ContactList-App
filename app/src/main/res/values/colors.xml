@@ -10,5 +10,8 @@
     <color name="navbar_background">#1a1a48</color>
     <color name="toolBar_background">#bebebe</color>
     <color name="dialog_button_color">#26c6da</color>
+    <color name="system_red">#ff0000</color>
+    <color name="system_transparent">#ffffff</color>
+    <color name="system_blue">#0000ff</color>
 
 </resources>
