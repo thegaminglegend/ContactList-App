@@ -28,9 +28,10 @@ Description: A contact list App that stores user's information. ContactListActiv
 
 public class ContactListActivity extends AppCompatActivity {
 
-    //Reference Variables
+    //Instance Variables
     ArrayList<Contact> contacts;
     ContactAdapter contactAdapter;
+    RecyclerView contactList;
 
     //Listener for opening main activity when the contact is selected
     private View.OnClickListener onItemClickerListener = new View.OnClickListener() {
@@ -62,7 +63,12 @@ public class ContactListActivity extends AppCompatActivity {
         initSettingsButton();
         initAddContactButton();
         initDeleteSwitch();
+    }
 
+
+    //On Resume method
+    public void onResume() {
+        super.onResume();
 
         String sortBy = getSharedPreferences("MyContactListPreferences", Context.MODE_PRIVATE).getString("sortfield", "contactname");
         String sortOrder = getSharedPreferences("MyContactListPreferences", Context.MODE_PRIVATE).getString("sortorder", "ASC");
@@ -77,16 +83,23 @@ public class ContactListActivity extends AppCompatActivity {
             ds.open();
             contacts = ds.getContacts(sortBy, sortOrder);
             ds.close();
-            //Find view with ID
-            RecyclerView contactList = findViewById(R.id.rvContacts);
-            //Instantiate layoutManager and set the layout manager
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager((this));
-            contactList.setLayoutManager(layoutManager);
-            //Instantiate contactAdapter and set the contactAdapter
-            contactAdapter = new ContactAdapter(contacts, this);
-            contactAdapter.setOnItemClickListener(onItemClickerListener);
-            contactList.setAdapter(contactAdapter);
 
+            //
+            if(contacts.size() > 0) {
+                //Find view with ID
+                contactList = findViewById(R.id.rvContacts);
+                //Instantiate layoutManager and set the layout manager
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager((this));
+                contactList.setLayoutManager(layoutManager);
+                //Instantiate contactAdapter and set the contactAdapter
+                contactAdapter = new ContactAdapter(contacts, this);
+                contactAdapter.setOnItemClickListener(onItemClickerListener);
+                contactList.setAdapter(contactAdapter);
+            }
+            else{
+                Intent intent = new Intent(ContactListActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
         //If something wrong show error text
         } catch (Exception e) {
             Toast.makeText(this, "Error retrieving contacts", Toast.LENGTH_LONG).show();
