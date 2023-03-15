@@ -5,10 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -24,32 +28,63 @@ Description: A contact list App that stores user's information. ContactListActiv
 
 public class ContactListActivity extends AppCompatActivity {
 
+    //Reference Variables
+    ArrayList<Contact> contacts;
+    ContactAdapter contactAdapter;
+
+    //Listener for opening main activity when the contact is selected
+    private View.OnClickListener onItemClickerListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder)  view.getTag();
+            //Get which position of contact is clicked
+            int position = viewHolder.getAdapterPosition();
+            //Get the contact
+            int contactId = contacts.get(position).getContactID();
+            //Set up intent
+            Intent intent = new Intent(ContactListActivity.this, MainActivity.class);
+            //get the contact id put in intent
+            intent.putExtra("contactId", contactId);
+            //Open Main activity with the intent
+            startActivity(intent);
+        }
+    };
+
     @Override
     //Method that initializes the activity when was navigated
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_list);
         //methods to initialize the Buttons
         initListButton();
         initMapButton();
         initSettingsButton();
+        initAddContactButton();
+        initDeleteSwitch();
+
+
+        String sortBy = getSharedPreferences("MyContactListPreferences", Context.MODE_PRIVATE).getString("sortfield", "contactname");
+        String sortOrder = getSharedPreferences("MyContactListPreferences", Context.MODE_PRIVATE).getString("sortorder", "ASC");
+
 
         //To get the data from database and display it
         //Instance variable
         ContactDataSource ds = new ContactDataSource(this);
-        ArrayList<String> names;
+
         try {
-            //Open DB get contactName and close DB
+            //Open DB get contacts and close DB
             ds.open();
-            names = ds.getContactName();
+            contacts = ds.getContacts(sortBy, sortOrder);
             ds.close();
             //Find view with ID
             RecyclerView contactList = findViewById(R.id.rvContacts);
             //Instantiate layoutManager and set the layout manager
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager((this));
             contactList.setLayoutManager(layoutManager);
             //Instantiate contactAdapter and set the contactAdapter
-            ContactAdapter contactAdapter = new ContactAdapter(names);
+            contactAdapter = new ContactAdapter(contacts, this);
+            contactAdapter.setOnItemClickListener(onItemClickerListener);
             contactList.setAdapter(contactAdapter);
 
         //If something wrong show error text
@@ -96,4 +131,34 @@ public class ContactListActivity extends AppCompatActivity {
             }
         });
     }
+
+    //Method to start a listener for add button
+    private void initAddContactButton(){
+        //Find view with ID
+        Button newContact = findViewById(R.id.buttonAddContact);
+        //Open main activity when clicked
+        newContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ContactListActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    //Method to initialize delete switch
+    private void initDeleteSwitch(){
+        //Find view with ID
+        Switch s = findViewById(R.id.switchDelete);
+        //Set listener so that if it is checked to turn on delete mode
+        s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                boolean status = compoundButton.isChecked();
+                contactAdapter.setDelete(status);
+                contactAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
 }

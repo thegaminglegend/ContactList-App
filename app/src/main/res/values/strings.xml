@@ -26,5 +26,6 @@
     <string name="sort_order">Sort Order:</string>
     <string name="ascending">Ascending</string>
     <string name="descending">Descending</string>
+    <string name="delete">Delete:</string>
 
 </resources>

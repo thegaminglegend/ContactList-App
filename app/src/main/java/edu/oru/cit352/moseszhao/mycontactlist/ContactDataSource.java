@@ -144,13 +144,13 @@ public class ContactDataSource {
     }
 
     //Method to retrieve data from DB
-    public ArrayList<Contact> getContacts() {
+    public ArrayList<Contact> getContacts(String sortField, String sortOrder) {
         //Instance Variable contains arraylist of contact object
         ArrayList<Contact> contacts = new ArrayList<Contact>();
 
         try {
             //Get all data from contact
-            String query = "SELECT * FROM contact";
+            String query = "SELECT * FROM contact ORDER BY " + sortField + " " + sortOrder;
             //Initialize cursor
             Cursor cursor = database.rawQuery(query, null);
             //Instance Variable
@@ -185,5 +185,44 @@ public class ContactDataSource {
         return contacts;
     }
 
+    //Method to  get specific information with contactId
+    public Contact getSpecificContact(int contactId) {
+        //Instance Variable
+        Contact contact = new Contact();
+        //Get the information of that contact with contactId
+        String query = "SELECT * FROM contact WHERE _id =" + contactId;
+        //Cursor
+        Cursor cursor = database.rawQuery(query, null);
+        //Get all the information to store in the contact object
+        if (cursor.moveToFirst()) {
+            contact.setContactID(cursor.getInt(0));
+            contact.setContactName(cursor.getString(1));
+            contact.setStreetAddress(cursor.getString(2));
+            contact.setCity(cursor.getString(3));
+            contact.setState(cursor.getString(4));
+            contact.setZipCode(cursor.getString(5));
+            contact.setPhoneNumber(cursor.getString(6));
+            contact.setCellNumber(cursor.getString(7));
+            contact.seteMail(cursor.getString(8));
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(Long.valueOf(cursor.getString(9)));
+            contact.setBirthday(calendar);
+            cursor.close();
+        }
+        return contact;
+    }
+
+    //Method for deleting Contact
+    public boolean deleteContact(int contactId) {
+        //Declare variable
+        boolean didDelete = false;
+        try{
+            //Delete the contact from DB
+            didDelete = database.delete("contact", "_id=" + contactId, null) > 0;
+        } catch (Exception e) {
+            //Do nothing if fail
+        }
+        return didDelete;
+    }
 
 }
