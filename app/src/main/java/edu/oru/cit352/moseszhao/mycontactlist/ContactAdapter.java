@@ -36,6 +36,10 @@ public class ContactAdapter extends RecyclerView.Adapter {
         //Reference Variables
         public TextView textViewContact;
         public TextView textPhone;
+        public TextView textAddress;
+        public TextView textCity;
+        public TextView textState;
+        public TextView textZipCode;
         public Button deleteButton;
 
         //Constructor
@@ -44,6 +48,10 @@ public class ContactAdapter extends RecyclerView.Adapter {
             //Find view with ID
             textViewContact = itemView.findViewById(R.id.textContactName);
             textPhone = itemView.findViewById(R.id.textPhoneNumber);
+            textAddress = itemView.findViewById(R.id.textStreetAddress);
+            textCity = itemView.findViewById(R.id.textCity);
+            textState = itemView.findViewById(R.id.textState);
+            textZipCode = itemView.findViewById(R.id.textZipCode);
             deleteButton = itemView.findViewById(R.id.buttonDeleteContact);
             //Tag to know which item was clicked
             itemView.setTag(this);
@@ -57,6 +65,18 @@ public class ContactAdapter extends RecyclerView.Adapter {
         }
         public TextView getPhoneTextView() {
             return textPhone;
+        }
+        public TextView getStreetAddressTextView() {
+            return textAddress;
+        }
+        public TextView getCityTextView() {
+            return textCity;
+        }
+        public TextView getStateTextView() {
+            return textState;
+        }
+        public TextView getZipCodeTextView() {
+            return textZipCode;
         }
         public Button getDeleteButton() {
             return deleteButton;
@@ -87,9 +107,13 @@ public class ContactAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         ContactViewHolder cvh = (ContactViewHolder) holder;
-        //Get the Name and Number in the relevant position and set it to viewHolder
+        //Get the information in the relevant position and set it to viewHolder
         cvh.getContactTextView().setText(contactData.get(position).getContactName());
         cvh.getPhoneTextView().setText(contactData.get(position).getPhoneNumber());
+        cvh.getStreetAddressTextView().setText(contactData.get(position).getStreetAddress());
+        cvh.getCityTextView().setText(contactData.get(position).getCity());
+        cvh.getStateTextView().setText(contactData.get(position).getState());
+        cvh.getZipCodeTextView().setText(contactData.get(position).getZipCode());
 
         //Check if is in delete mode
         if(isDeleting){
